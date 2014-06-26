@@ -1,0 +1,146 @@
+/* get rid top and side white space bars using margin and height */
+
+body
+{
+font-size: 0;
+margin: 0;
+}
+
+
+#container
+{
+font-size: 0;
+overflow: hidden;
+
+width: 1450px;
+height: 800px;
+background-color:brown;
+
+position: relative;
+display: inline-block;
+}
+
+#header
+{
+width: 100%;
+height: 10px;
+background-color:gray;
+
+position: relative;
+display: inline-block;
+}
+
+#center
+{
+font-size:medium;
+overflow:hidden;
+
+width: 800px;
+height: 100%;
+background-color:green;
+
+position: relative;
+display: inline-block;
+}
+
+#chat_embed
+{
+margin: 30px 0px 0px 15px;
+
+}
+
+#searchTwitchForm
+{
+font-size: small;
+overflow: hidden;
+
+width: 175px;
+height: 100%;
+background-color:red;
+
+position: relative;
+display: inline-block;
+}
+
+#insertionpoint
+{
+font-size: 0;
+overflow: hidden;
+
+position: relative;
+display: inline-block;
+}
+
+#image
+{
+font-size: 0;
+overflow: hidden;
+
+position: relative;
+display: inline-block;
+}
+
+#streamer
+{
+
+font-size: small;
+
+overflow: hidden;
+width: 100px;
+
+margin: 0px 0px 5px 0px;
+
+position: relative;
+display: inline-block;
+}
+
+#twitchchat
+{
+font-size: 0;
+overflow: hidden;
+
+width: 200px;
+height: 300px;
+background-color: blue;
+color: black;
+
+position: relative;
+display: inline-block;
+}
+
+/* scroll results */
+.ui-autocomplete {
+max-height: 250px;
+overflow-y: auto;
+/* prevent horizontal scrollbar */
+overflow-x: hidden;
+/* add padding for vertical scrollbar */
+padding-right: 5px;
+}
+
+/* loading - the AJAX indicator */
+.ui-autocomplete-loading {
+    background: white url('../img/ui-anim_basic_16x16.gif') right center no-repeat;
+}
+
+/* highlight results */
+.ui-autocomplete span.hl_results {
+    background-color: #ffff66;
+}
+
+.ui-autocomplete li {
+    font-size: 16px;
+}
+
+.marquee {
+width:  100px; /* the plugin works for responsive layouts so width is not necessary */
+
+overflow: hidden;
+border:1px solid #black;
+background: gray;
+
+position: relative;
+display: inline-block;
+
+}
+

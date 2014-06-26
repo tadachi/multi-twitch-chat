@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang='en' ng-app='app'>
+    <head>
+        <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+        <title>Template</title>
+        <link rel='stylesheet' href='css/main.css'>
+        <link rel='stylesheet' href='css/redmond/jquery-ui-1.10.4.custom.min.css'>
+<!--load JQuery before Angular-->
+        <script src='js/jquery-1.10.2.js'></script>
+        <script src='js/jquery-2.1.1.min.js'></script>
+        <script src='js/jquery-ui-1.10.4.custom.min.js'></script>
+<!-- JQuery Plugins -->
+        <script src='js/jquery.marquee.min.js'></script>
+<!-- Angularjs -->
+<!--         <script src='js/angular.min.1.3.0b10.js'></script> -->
+        <script src='js/angular.1.3.0b11.js'></script>
+        <script src='js/angular-sanitize.min.1.3.0b10.js'></script>
+<!--         <script src='js/twitch.min.js'></script> -->
+
+
+    </head>
+
+<script>
+/* Similar to what you find in Java's format. */
+/* Usage: chatsrc = 'http://twitch.tv/chat/embed?channel={channel}&amp;popout_chat=true'.format({ channel: streamer}); */
+if (!String.prototype.format) {
+    String.prototype.format = function() {
+        var str = this.toString();
+        if (!arguments.length)
+            return str;
+        var args = typeof arguments[0],
+            args = (('string' == args || 'number' == args) ? arguments : arguments[0]);
+        for (arg in args)
+            str = str.replace(RegExp('\\{' + arg + '\\}', 'gi'), args[arg]);
+        return str;
+    }
+}
+
+/* Initialize twitch.min.js */
+// Twitch.init({clientId: '5wf6b3t4dqr0rfbthgkqqlz79yy9rg'}, function(error, status) {
+//   if (error) {
+//     // error encountered while loading.
+//     console.log(error);
+//   }
+//   // the sdk is now loaded.
+//   console.log('Twitch API Initialized');
+// });
+
+//Bootstrap the application.
+var app = angular.module('app', ['ngSanitize'], ['$compileProvider', function($compileProvider) {
+ $compileProvider.directive('myCompileUnsafe', ['$compile', function($compile) {
+    return function(scope, element, attrs) {
+      scope.$watch(
+            function(scope) {
+              // watch the 'compile' expression for changes
+              return scope.$eval(attrs.myCompileUnsafe);
+            },
+            function(value) {
+              // when the 'compile' expression changes
+              // assign it into the current DOM element
+              element.html(value);
+
+              // compile the new DOM and link it to the current
+              // scope.
+              // NOTE: we only compile .childNodes so that
+              // we don't get into infinite loop compiling ourselves
+              $compile(element.contents())(scope);
+            }
+          );
+        };
+    }]);
+}]);
+
+
+app.controller('MainController', function($scope,$location) {
+    $scope.test = 'MainController';
+
+    $scope.searchresults = [];
+    $scope.selectedstreams = [];
+
+    $scope.colors = ['AliceBlue','AntiqueWhite','Aqua','Aquamarine','Azure','Beige','Bisque','Black','BlanchedAlmond','Blue','BlueViolet','Brown','BurlyWood','CadetBlue','Chartreuse',
+              'Chocolate','Coral','CornflowerBlue','Cornsilk','Crimson','Cyan','DarkBlue','DarkCyan','DarkGoldenRod','DarkGray','DarkGrey','DarkGreen','DarkKhaki','DarkMagenta',
+              'DarkOliveGreen','Darkorange','DarkOrchid','DarkRed','DarkSalmon','DarkSeaGreen','DarkSlateBlue','DarkSlateGray','DarkSlateGrey','DarkTurquoise','DarkViolet','DeepPink',
+              'DeepSkyBlue','DimGray','DimGrey','DodgerBlue','FireBrick','FloralWhite','ForestGreen','Fuchsia','Gainsboro','GhostWhite','Gold','GoldenRod','Gray','Grey','Green','GreenYellow',
+              'HoneyDew','HotPink','IndianRed','Indigo','Ivory','Khaki','Lavender','LavenderBlush','LawnGreen','LemonChiffon','LightBlue','LightCoral','LightCyan','LightGoldenRodYellow','LightGray',
+              'LightGrey','LightGreen','LightPink','LightSalmon','LightSeaGreen','LightSkyBlue','LightSlateGray','LightSlateGrey','LightSteelBlue','LightYellow','Lime','LimeGreen','Linen','Magenta',
+              'Maroon','MediumAquaMarine','MediumBlue','MediumOrchid','MediumPurple','MediumSeaGreen','MediumSlateBlue','MediumSpringGreen','MediumTurquoise','MediumVioletRed','MidnightBlue',
+              'MintCream','MistyRose','Moccasin','NavajoWhite','Navy','OldLace','Olive','OliveDrab','Orange','OrangeRed','Orchid','PaleGoldenRod','PaleGreen','PaleTurquoise','PaleVioletRed',
+              'PapayaWhip','PeachPuff','Peru','Pink','Plum','PowderBlue','Purple','Red','RosyBrown','RoyalBlue','SaddleBrown','Salmon','SandyBrown','SeaGreen','SeaShell','Sienna','Silver',
+              'SkyBlue','SlateBlue','SlateGray','SlateGrey','Snow','SpringGreen','SteelBlue','Tan','Teal','Thistle','Tomato','Turquoise','Violet','Wheat','White','WhiteSmoke','Yellow','YellowGreen'];
+
+    $scope.getRandomSpan = function(){
+        return Math.floor((Math.random()*6)+1);
+    }
+
+//     var searchObject = $location.search();
+//     console.log(searchObject);
+
+//     $location.path('/newValue')
+//     console.log($location.path());
+
+    $scope.addStream = function(value) {
+        if ($.inArray(value, $scope.selectedstreams) == -1 ) {
+            $scope.selectedstreams.push(value);
+            console.log($scope.selectedstreams);
+        }
+    }
+});
+
+app.controller('SearchController', function($scope) {
+    $scope.test = 'SearchController';
+    $scope.twitchselectedstreams = ['SearchController','b'];
+});
+
+app.directive('resizable', function() {
+    return {
+        restrict: 'AEC',
+        link: function($scope, $element) {
+            $element.resizable({
+                minWidth: 30,
+                minHeight: 50
+            });
+        }
+    };
+});
+
+app.directive('draggable', function() {
+    return {
+        restrict: 'AEC',
+        link: function($scope, $element) {
+            $element.draggable({
+                containment: '#centerr',
+                stack: '.set'
+            });
+        }
+    };
+});
+
+app.directive('marquee', function() {
+    return{
+        restrict: 'AEC',
+        link: function($scope, $element) {
+            $element.marquee({
+                //speed in milliseconds of the marquee
+                duration: 15000,
+                //gap in pixels between the tickers
+                gap: 50,
+                //time in milliseconds before the marquee will start animating
+                delayBeforeStart: 0,
+                //'left' or 'right'
+                direction: 'left',
+                //true or false - should the marquee be duplicated to show an effect of continues flow
+                duplicated: true
+            });
+        }
+    }
+});
+
+app.directive('autoResolution', function($window) {
+    return  {
+        controller: function($scope, $element) {
+            var w = angular.element($window);
+
+            console.log( w.width() + ' ' + w.height() );
+
+            $element.bind('resize', function() {
+                console.log( w.width() + ' ' + w.height() );
+
+                $element.attr('width', w.width());
+                $element.attr('height', w.height());
+
+            });
+
+        }
+    }
+});
+
+app.directive('errSrc', function() {
+    return {
+        link: function($scope, $element, $attrs) {
+
+            $scope.$watch(function() { return $attrs['ngSrc']; },
+            function (value) {
+                    if (!value) {
+                        $element.attr('src', $attrs.errSrc);
+                    }
+
+            });
+
+            $element.bind('error', function() {
+                $element.attr('src', $attrs.errSrc);
+            });
+        }
+    }
+});
+
+app.directive('multiChat', ['$compile', function($compile) {
+
+    var chatsrc = 'http://twitch.tv/chat/embed?channel={ch}&amp;popout_chat=true'.format({
+                ch: 'feasel'});
+//     var origin =    ['<iframe ',
+//                             'id=\'chat_embed\' ',
+//                             'frameborder=\'0\' ',
+//                             'scrolling=\'yes\' ',
+//                             'src=\'{url}\' '.format({url: chatsrc}),
+//                              'width=\'{w}\' '.format({w: 300}),
+//                             'height=\'{h}\' '.format({h: 500}),
+//                              'draggable> ',
+//                         '</iframe>'].join('');
+    var origin = 'test';
+    string = ["<div id='twitchchat' resizable draggable>",
+            origin,
+            "</div>"].join('');
+
+    return {
+        restrict: 'AEC',
+//         template: ["<div id='twitchchat' class='set 0' style='background-color: {color}' draggable resizable>".format({color: 'blue'}),
+//                     "<button ng-click='del(0)'>del</button>",
+//                     "</div>"].join(''),
+        scope: {
+            insertionpoint: '=?',
+            streamname: '=?'
+        },
+        controller: 'MainController',
+        link: function($scope, $element) {
+            $element.bind('click', function(e) {
+                console.log($scope.streamname);
+                $scope.add('#insertionpoint', $scope.streamname);
+            });
+
+            $scope.add = function(insertionpoint, streamname) {
+                var uid = Math.floor(Math.random() * 100000); //Genrate random number between 0-100000
+
+                // Update the color upon adding a new div.
+                $scope.color = $scope.colors[Math.floor(Math.random() * $scope.colors.length)]; //$scope.colors.length = 147
+
+                var html = ["<div id='twitchchat' class='set {uid}' style='background-color: {color}'  draggable resizable>".format({color: $scope.color, uid: uid}),
+                            "<button ng-click='del({uid})'>del {streamname}</button>".format({uid: uid, streamname: streamname}),
+                            "</div>"
+                            ].join('');
+
+                var el = $compile(html)($scope);
+
+                $(insertionpoint).append(el);
+            };
+
+            /* Remove div with a uid inside its class */
+            $scope.del = function(uid) {
+
+                $('.' + uid).effect('fade', {}, 350, function() {
+                    $('.' + uid).remove();
+                });
+            };
+        }
+
+    };
+}]);
+
+app.directive('twitchSearch', ['$compile', function($compile){
+    return {
+        restrict: 'AEC',
+        controller: 'MainController',
+        link: function($scope, $element, $attrs) {
+
+            $scope.search = function(streamname) {
+                $.ajax({
+                    url: 'https://api.twitch.tv/kraken/search/channels?q={streamname}'.format({ streamname: streamname}),
+
+                    // the name of the callback parameter, as specified by the YQL service
+                    jsonp: "callback",
+
+                    // tell jQuery we're expecting JSONP
+                    dataType: "jsonp",
+
+                    // work with the response
+                    success: function( response ) {
+                        $scope.$apply(function() {
+                            $scope.searchresults = response.channels;
+                        });
+
+                        console.log( response.channels ); // server response
+                    }
+
+                });
+            }
+
+            $element.bind('propertychange keyup paste', function(blurEvent) {
+                setTimeout($scope.search($element.val()), 400);
+
+            });
+
+
+        },
+
+   };
+
+}]);
+
+</script>
+    <body ng-app='app' ng-controller='MainController'>
+        <div id='container' auto-resolution ng-style='size'>
+<!--             <div id='searchTwitchForm' >
+                <span style='margin: 0px 0px 0px 12px;'>
+                    <input type='text' id='streamnames' twitch-search ng-model='searchText'></input>
+                </span>
+
+                <div ng-repeat='channel in searchresults | filter:searchText'>
+                    <multi-chat ng-click='addStream(channel.display_name)' streamname='channel.display_name'>
+                    <div id='image'><img ng-src='{{channel.logo}}' width='30' height='30' err-src='img/twitchchat.jpg'></img></div>
+                    <div id='streamer'>
+                        {{channel.display_name}}
+                    </div>
+                    </multi-chat>
+                </div>
+            </div>
+            <div id='center'>
+                <div id='insertionpoint'>
+                </div>
+            </div> -->
+
+
+        </div>
+    </body>
+</html>
