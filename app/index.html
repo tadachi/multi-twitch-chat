@@ -80,7 +80,7 @@ app.controller('MainController', function($scope,$location) {
     $scope.searchtext = '';
 
     $scope.searchresults = [];
-    $scope.selectedstreams = [];
+    $scope.selectedstreams = ['test'];
 
     $scope.colors = ['AliceBlue','AntiqueWhite','Aqua','Aquamarine','Azure','Beige','Bisque','Black','BlanchedAlmond','Blue','BlueViolet','Brown','BurlyWood','CadetBlue','Chartreuse',
               'Chocolate','Coral','CornflowerBlue','Cornsilk','Crimson','Cyan','DarkBlue','DarkCyan','DarkGoldenRod','DarkGray','DarkGrey','DarkGreen','DarkKhaki','DarkMagenta',
@@ -104,12 +104,7 @@ app.controller('MainController', function($scope,$location) {
 //     $location.path('/newValue')
 //     console.log($location.path());
 
-    $scope.addStream = function(value) {
-        if ($.inArray(value, $scope.selectedstreams) == -1 ) {
-            $scope.selectedstreams.push(value);
-            console.log($scope.selectedstreams);
-        }
-    }
+
 });
 
 app.controller('SearchController', function($scope) {
@@ -117,17 +112,17 @@ app.controller('SearchController', function($scope) {
     $scope.twitchselectedstreams = ['SearchController','b'];
 });
 
-app.directive('resizable', function() {
-    return {
-        restrict: 'AEC',
-        link: function($scope, $element) {
-            $element.resizable({
-                minWidth: 30,
-                minHeight: 50
-            });
-        }
-    };
-});
+// app.directive('resizable', function() {
+//     return {
+//         restrict: 'AEC',
+//         link: function($scope, $element) {
+//             $element.resizable({
+//                 minWidth: 30,
+//                 minHeight: 50
+//             });
+//         }
+//     };
+// });
 
 app.directive('draggable', function() {
     return {
@@ -141,44 +136,43 @@ app.directive('draggable', function() {
     };
 });
 
-app.directive('marquee', function() {
-    return{
-        restrict: 'AEC',
-        link: function($scope, $element) {
-            $element.marquee({
-                //speed in milliseconds of the marquee
-                duration: 15000,
-                //gap in pixels between the tickers
-                gap: 50,
-                //time in milliseconds before the marquee will start animating
-                delayBeforeStart: 0,
-                //'left' or 'right'
-                direction: 'left',
-                //true or false - should the marquee be duplicated to show an effect of continues flow
-                duplicated: true
-            });
-        }
-    }
-});
+// app.directive('marquee', function() {
+//     return{
+//         restrict: 'AEC',
+//         link: function($scope, $element) {
+//             $element.marquee({
+//                 //speed in milliseconds of the marquee
+//                 duration: 15000,
+//                 //gap in pixels between the tickers
+//                 gap: 50,
+//                 //time in milliseconds before the marquee will start animating
+//                 delayBeforeStart: 0,
+//                 //'left' or 'right'
+//                 direction: 'left',
+//                 //true or false - should the marquee be duplicated to show an effect of continues flow
+//                 duplicated: true
+//             });
+//         }
+//     }
+// });
 
-app.directive('autoResolution', function($window) {
-    return  {
-        controller: function($scope, $element) {
-            var w = angular.element($window);
+// app.directive('autoResolution', function($window) {
+//     return  {
+//         controller: function($scope, $element) {
+//             var w = angular.element($window);
 
-            console.log( w.width() + ' ' + w.height() );
+//             console.log( w.width() + ' ' + w.height() );
 
-            $element.bind('resize', function() {
-                console.log( w.width() + ' ' + w.height() );
+//             $element.bind('resize', function() {
+//                 console.log( w.width() + ' ' + w.height() );
 
-                $element.attr('width', w.width());
-                $element.attr('height', w.height());
+//                 $element.attr('width', w.width());
+//                 $element.attr('height', w.height());
+//             });
 
-            });
-
-        }
-    }
-});
+//         }
+//     }
+// });
 
 app.directive('errSrc', function() {
     return {
@@ -186,10 +180,9 @@ app.directive('errSrc', function() {
 
             $scope.$watch(function() { return $attrs['ngSrc']; },
             function (value) {
-                    if (!value) {
-                        $element.attr('src', $attrs.errSrc);
-                    }
-
+                if (!value) {
+                    $element.attr('src', $attrs.errSrc);
+                }
             });
 
             $element.bind('error', function() {
@@ -205,19 +198,23 @@ app.directive('generateMultiChat', ['$compile', function($compile) {
         restrict: 'AEC',
         scope: {
             insertionpoint: '@',
-            streamname: '=?'
+            streamname: '@'
         },
         controller: 'MainController',
-        link: function($scope, $element) {
+        link: function($scope, $element, $attrs) {
             $element.bind('click', function(e) {
-                console.log('streamname: ' + $scope.streamname);
-                console.log('insertionpoint: ' + $scope.insertionpoint);
-                $scope.add('#'+ $scope.insertionpoint, $scope.streamname); // What div you want the chat to be placed
+                var uid = Math.floor(Math.random() * 100000); //Genrate random number between 0-100000
+                var selectedstreamss = $scope.$eval($attrs.selectedstreamss);
+                $scope.$apply(function() {
+                    selectedstreamss.push({ key: uid, stream: $scope.streamname });
+                    console.log($scope.selectedstreams);
+                });
+
+                $scope.add(uid, '#'+ $scope.insertionpoint, $scope.streamname); // What div you want the chat to be placed
+
             });
 
-            $scope.add = function(insertionpoint, streamname) {
-                var uid = Math.floor(Math.random() * 100000); //Genrate random number between 0-100000
-
+            $scope.add = function(uid, insertionpoint, streamname) {
                 // Source(src) of the chat with streamname.
                 var chatsrc = 'http://twitch.tv/chat/embed?channel={ch}&amp;popout_chat=true'.format({
                     ch: $scope.streamname});
@@ -269,13 +266,12 @@ app.directive('twitchSearch', ['$compile', function($compile){
                 $.ajax({
                     url: 'https://api.twitch.tv/kraken/search/channels?q={streamname}'.format({ streamname: streamname}),
 
-                    // the name of the callback parameter, as specified by the YQL service
+                    // The name of the callback parameter, as specified by the YQL service.
                     jsonp: "callback",
 
-                    // tell jQuery we're expecting JSONP
+                    // Tell jQuery we're expecting JSONP.
                     dataType: "jsonp",
 
-                    // work with the response
                     success: function( response ) {
                         $scope.$apply(function() {
                             $scope.searchresults = response.channels;
@@ -304,10 +300,10 @@ app.directive('twitchSearch', ['$compile', function($compile){
         containerWidth = (currWinWidth);
         containerHeight = (currWinHeight);
 
-        centerPanelWidth = Math.floor(0.87 * currWinWidth);
+        centerPanelWidth = Math.floor(currWinWidth - 250);
         centerPanelHeight = Math.floor(currWinHeight);
 
-        searchTwitchFormWidth = Math.floor(0.13 * currWinWidth);
+        searchTwitchFormWidth = Math.floor(250);
         searchTwitchFormHeight = Math.floor(currWinHeight);
 
         return {
@@ -334,24 +330,28 @@ app.directive('twitchSearch', ['$compile', function($compile){
         /* JQuery applys on document loaded. */
     $( document ).ready(function() {
         applyResolutions(); // Apply panel resolutions based on current window sizes
+
+        $( window ).on('resize', function() {
+            applyResolutions()
+        });
     });
 </script>
 
     <body>
         <div id='container' ng-controller='MainController'>
             <div id='header'>
-                <span id='copyright' class='senlightfont' style='position: absolute; margin: 4px 0px 0px 50px; font-size: medium;'>&copy; 2014 takada</span>
+                <span id='copyright' class='senlightfont' style='position: absolute; margin: 3px 0px 0px 50px; font-size: medium;'>&copy; 2014 takada</span>
+                <span id='multitwitchchat' class='senlightfont' style='position: absolute; margin: 3px 0px 0px 250px; font-size: medium;'><a href='http://srl.takbytes.com'>srlplayer</a></span>
             </div>
 
             <div id='searchTwitchForm' >
-
                 <input type='text' id='streamnames' twitch-search ng-model='searchtext'
-                       style='position: relative; margin: display:inline-block; width: 99%;
-                              font-size: 12px; border: 1px; border-style: solid; border-color: black;'>
+                       style='position: relative; margin: display:inline-block; width: 99%; height: 30px;
+                              font-size: 25px; border: 1px; border-style: solid; border-color: black;'>
                                </input>
 
                 <div  ng-repeat='channel in searchresults'>
-                    <generate-multi-chat ng-click='addStream(channel.display_name)' streamname='channel.display_name' insertionpoint='center'>
+                    <generate-multi-chat streamname='{{channel.display_name}}' selectedstreamss='selectedstreams' insertionpoint='center'>
                         <div id='streamerslist'>
                         <div id='streamerlogo'>
                             <img ng-src='{{channel.logo}}' width='30' height='30' err-src='img/twitchchat.jpg'></img>
