@@ -1,7 +1,10 @@
-body
+html,body
 {
 font-size: 0;
 margin: 0;
+
+width: 100%;
+height: 100%;
 }
 
 
@@ -10,8 +13,8 @@ margin: 0;
 font-size: 0;
 overflow: hidden;
 
-width: 1450px;
-height: 800px;
+width: 100%;
+height: auto;
 background-color:brown;
 
 position: relative;
@@ -21,11 +24,11 @@ display: inline-block;
 #header
 {
 width: 100%;
-height: 25px;
+height: 3%;
 background-color:#A8A8A8; /*gray*/
 
 position: relative;
-display: inline-block;
+z-index: 1;
 }
 
 #searchTwitchForm
@@ -33,7 +36,7 @@ display: inline-block;
 font-size: 0;
 overflow: hidden;
 
-width: 175px;
+width: 10%;
 height: 100%;
 background-color:lightgray;
 
@@ -41,13 +44,31 @@ position: relative;
 display: inline-block;
 }
 
+#savedChatList
+{
+font-size: medium;
+overflow: hidden;
+
+width: 15%;
+height: 100%;
+background-color:white;
+
+position: absolute;
+display: inline-block;
+
+margin-top: 0px;
+
+z-index: 2;
+/*display: none;*/
+}
+
 #center
 {
 font-size: 0;
 overflow: hidden;
 
-width: 800px;
-height: 100%;
+width: 85%;
+height: 97%;
 background-color:#E8E8E8; /*lightergray*/
 
 position: relative;
@@ -72,19 +93,8 @@ display: inline-block;
 margin: 20px 0px 0px 10px;
 }
 
-#streamers
-{
-width: 100px;
-height: 40px;
-border: 10px;
-
-position: relative;
-display: inline-block;
-}
-
 #streamerlogo
 {
-
 position: relative;
 display: inline-block;
 }
@@ -92,14 +102,13 @@ display: inline-block;
 #streamer
 {
 font-size: 170%;
-width: 175px;
+width: 190px;
 
 color: darkgreen;
 cursor: pointer;
 overflow: hidden;
 
 text-overflow:ellipsis;
-margin 0 0 0 0;
 
 position: relative;
 display: inline-block;
@@ -114,17 +123,35 @@ cursor: pointer;
 height: 30px;
 
 border-color: black;
-border-top: 0px;
 border-bottom: 1px solid;
-border-right: 0px;
-border-left: 0px;
-
 }
 
+.topcornerlogo
+{
+position: absolute;
+top:0;
+right:0;
+background-color: white;
+border-color: black;
+border: 2px solid;
+border-radius: 4px;
+}
 /*
  * Custom Fonts
  * The following should not be editted.
  */
+
+.unselectable {
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: none;
+   user-select: none;
+}
 
 @font-face {
 font-family: 'SansationLight';
@@ -177,4 +204,3 @@ position: relative;
 display: inline-block;
 
 }
-
