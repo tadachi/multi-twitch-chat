@@ -33,7 +33,7 @@ z-index: 1;
 
 #searchTwitchForm
 {
-font-size: 0;
+font-size: 10px;
 overflow: hidden;
 
 width: 10%;
@@ -51,7 +51,7 @@ overflow: hidden;
 
 width: 15%;
 height: 100%;
-background-color:white;
+background-color:#E0E3E8; /*lighterergray*/
 
 position: absolute;
 display: inline-block;
@@ -93,7 +93,7 @@ display: inline-block;
 margin: 20px 0px 0px 10px;
 }
 
-#streamerlogo
+#logo
 {
 position: relative;
 display: inline-block;
@@ -102,7 +102,7 @@ display: inline-block;
 #streamer
 {
 font-size: 170%;
-width: 190px;
+width: 170px;
 
 color: darkgreen;
 cursor: pointer;
