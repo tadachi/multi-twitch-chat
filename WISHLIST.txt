@@ -1,0 +1,6 @@
+Easy
+- Allow scroll down for streams
+
+Hard
+- Load custom irc client that's faster than twitch's.
+	- Must have access to all emotes and submotes.

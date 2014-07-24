@@ -183,10 +183,11 @@ app.directive('multiChat', ['$compile', function($compile) {
         },
         link: function($scope, $element, $attrs) {
             $element.bind('click', function(e) {
+                console.log($scope.logo);
                 var stream = { streamname: $scope.streamname, logo: $scope.logo };
                 var index = $scope.savedstreamers.indexOf(stream);
 
-                if ($scope.savedstreamers.length >= 20) {
+                if ($scope.savedstreamers.length >= 8) { // Set a maximum number of streams allowed opened.
                     return -1;
                 }
 
@@ -224,6 +225,7 @@ app.directive('multiChat', ['$compile', function($compile) {
             }
 
             $scope.add = function(insertionpoint, stream) {
+                res = calcResolutions();
 
                 // Source(src) of the chat with streamname.
                 var chatsrc = 'http://twitch.tv/chat/embed?channel={ch}&amp;popout_chat=true'.format({
@@ -244,7 +246,7 @@ app.directive('multiChat', ['$compile', function($compile) {
                 $scope.color = $scope.colors[Math.floor(Math.random() * $scope.colors.length)]; //$scope.colors.length = 147
 
                 var html = ["<div id='twitchchat' class='set {uid}' style='background-color: {color}' draggable>".format({color: $scope.color, uid: stream.streamname}), // resizable
-                            chat,
+                            // chat,
                             "<img ng-src='{logo}' class='topcornerlogo' width='50' height='50' err-src='img/twitchchat.jpg'>".format({logo: stream.logo}),
                             "</div>"
                             ].join('');
@@ -252,6 +254,8 @@ app.directive('multiChat', ['$compile', function($compile) {
                 var compiledhtml = $compile(html)($scope);
 
                 $('#'+insertionpoint).append(compiledhtml);
+
+                applyResolutions();
             }
         }
     };

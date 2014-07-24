@@ -12,7 +12,6 @@ height: 100%;
 {
 font-size: 0;
 overflow: hidden;
-
 width: 100%;
 height: auto;
 background-color:brown;
@@ -34,7 +33,7 @@ z-index: 1;
 #searchTwitchForm
 {
 font-size: 10px;
-overflow: hidden;
+overflow: auto;
 
 width: 10%;
 height: 100%;
@@ -65,7 +64,7 @@ z-index: 2;
 #center
 {
 font-size: 0;
-overflow: hidden;
+overflow: auto;
 
 width: 85%;
 height: 97%;
