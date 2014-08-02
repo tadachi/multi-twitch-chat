@@ -53,8 +53,7 @@ var app = angular.module('app', ['ngSanitize', 'ngStorage'], ['$compileProvider'
                 // assign it into the current DOM element
                 element.html(value);
 
-                // compile the new DOM and link it to the current
-                // scope.
+                // compile the new DOM and link it to the current scope.
                 // NOTE: we only compile .childNodes so that
                 // we don't get into infinite loop compiling ourselves
                 $compile(element.contents())(scope);
@@ -246,7 +245,7 @@ app.directive('multiChat', ['$compile', function($compile) {
                 $scope.color = $scope.colors[Math.floor(Math.random() * $scope.colors.length)]; //$scope.colors.length = 147
 
                 var html = ["<div id='twitchchat' class='set {uid}' style='background-color: {color}' draggable>".format({color: $scope.color, uid: stream.streamname}), // resizable
-                            // chat,
+                            chat,
                             "<img ng-src='{logo}' class='topcornerlogo' width='50' height='50' err-src='img/twitchchat.jpg'>".format({logo: stream.logo}),
                             "</div>"
                             ].join('');
@@ -303,14 +302,11 @@ app.directive('twitchSearch', ['$compile', function($compile){
                             $scope.searchresults = response.channels;
                         });
 
-                        console.log( response ); // server response
+                        console.log( response );
                     }
                 });
             }
 
-            // $element.bind('propertychange keyup paste', function(blurEvent) {
-            //     setTimeout($scope.search($element.val()), 0);
-            // });
             $element.typing({
                 start: function (event, $elem) {
 
@@ -392,8 +388,6 @@ app.directive('twitchSearch', ['$compile', function($compile){
             <div id='header'>
                 <div id='chatList' class='senlightfont unselectable' style='position: absolute; margin-top: 5px; font-size: medium;
                 border-radius: 4px; border-color: black; border: 1px solid; background-color: white; cursor: pointer;' ng-click="showSavedChatList = ! showSavedChatList">Manage Chats</div>
-                <!-- <div id='showSearch' class='senlightfont unselectable' style='position: absolute; margin-top: 5px; font-size: medium;
-                border-radius: 4px; border-color: black; border: 1px solid; background-color: white; cursor: pointer;' ng-click="!hideSavedChatList">Search</div> -->
                 <div id='copyright' class='senlightfont' style='position: absolute; margin-top: 5px; font-size: medium;'>&copy; 2014 takada</div>
                 <div id='srlplayer' class='senlightfont' style='position: absolute; margin-top: 5px; font-size: medium;'><a href='http://srl.takbytes.com'>srlplayer</a></div>
             </div>
