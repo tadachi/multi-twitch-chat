@@ -1,12 +1,11 @@
 var express         = require('express');
 var bodyParser      = require('body-parser');
 var methodOverride  = require('method-override');
-var port            = parseInt(process.env.PORT, 10) || 4000;
-var fs              = require('fs');
-var path            = require('path');
 var router          = express.Router();
 var vhost           = require('vhost');
 var app             = require('express.io')();
+
+var port            = parseInt(process.env.PORT, 10) || 4000;
 app.http().io();
 
 // parse application/x-www-form-urlencoded
@@ -29,8 +28,8 @@ home.set('jsonp callback', true);
 /* Testing headers */
 home.use(function (req, res, next) {
     // Website you wish to allow to connect
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    // res.header('Access-Control-Allow-Origin', '*');
+    // res.header("Access-Control-Allow-Headers", "X-Requested-With");
 
     // Request methods you wish to allow
     //res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -39,7 +38,7 @@ home.use(function (req, res, next) {
     next();
 });
 
-var hostname = 'mtc.tak.com';
+var hostname = 'mtc.tak.com'; // Change this to your host name.
 app.use(vhost(hostname, home));
 
 home.get('/', function(req, res) {
