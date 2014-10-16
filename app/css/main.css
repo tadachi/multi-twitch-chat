@@ -37,7 +37,7 @@ overflow: auto;
 
 width: 10%;
 height: 100%;
-background-color:lightgray;
+background-color: lightgray;
 
 position: relative;
 display: inline-block;
@@ -190,16 +190,4 @@ padding-right: 5px;
 
 .ui-autocomplete li {
     font-size: 16px;
-}
-
-.marquee {
-width:  100px; /* the plugin works for responsive layouts so width is not necessary */
-
-overflow: hidden;
-border:1px solid #black;
-background: gray;
-
-position: relative;
-display: inline-block;
-
 }
