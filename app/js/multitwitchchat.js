@@ -194,10 +194,11 @@ app.directive('multiChat', ['$compile', function($compile) {
 				$scope.color = $scope.colors[Math.floor(Math.random() * $scope.colors.length)];
 
 				var html = ["<div id='twitchchat' class='set {uid}' style='background-color: {color}' draggable>".format({color: $scope.color, uid: stream.streamname}), // resizable
-							"<span style='margin: 20px 0px 0px 20px;'>{chat}</span>".format({chat: chat}),
+							"<span style='position: absolute; margin: 20px 0px 0px 20px;'>{chat}</span>".format({chat: chat}),
 							"<img ng-src='{logo}' class='topcornerlogo' width='50' height='50' err-src='img/twitchchat.jpg'>".format({logo: stream.logo}),
 							"</div>"
-							].join('');
+							].join(''); //Html from above all together.
+
 				console.log($('.' + stream.streamname));
 				var compiledhtml = $compile(html)($scope);
 
