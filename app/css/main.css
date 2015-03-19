@@ -1,139 +1,144 @@
-html,body
-{
-font-size: 0;
-margin: 0;
-
-width: 100%;
-height: 100%;
+html,body {
+    font-size: 0;
+    margin: 0;
+    scroll: hidden;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 
-#container
-{
-font-size: 0;
-overflow: hidden;
-width: 100%;
-height: auto;
-background-color:brown;
-
-position: relative;
-display: inline-block;
+#container {
+    width: 100%;
+    height: 100%;
+    font-size: 0;
+    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
-#header
-{
-width: 100%;
-height: 3%;
-background-color:#A8A8A8; /*gray*/
-
-position: relative;
-z-index: 1;
+#header {
+    font-size: medium;
+    background-color:#A8A8A8; /*gray*/
+    position: relative;
+    display: inline-block;
 }
 
-#searchTwitchForm
-{
-font-size: 10px;
-overflow: auto;
-
-width: 10%;
-height: 100%;
-background-color: lightgray;
-
-position: relative;
-display: inline-block;
+.initial-header-margin {
+    margin-left: 72px;
+    margin-right: 72px;
 }
 
-#savedChatList
-{
-font-size: medium;
-overflow: hidden;
-
-width: 15%;
-height: 100%;
-background-color:#E0E3E8; /*lighterergray*/
-
-position: absolute;
-display: inline-block;
-
-margin-top: 0px;
-
-z-index: 2;
-/*display: none;*/
+.header-item{
+    margin-left: 20px;
 }
 
-#center
-{
-font-size: 0;
-overflow: auto;
-
-width: 85%;
-height: 97%;
-background-color:#E8E8E8; /*lightergray*/
-
-position: relative;
-display: inline-block;
+.header-margin {
+    margin-top: 5px;
 }
 
-#twitchchat
-{
-font-size: 0;
-
-width:  350px;
-height: 580px;
-background-color: blue;
-color: black;
-
-position: relative;
-display: inline-block;
+.header-image-item {
+    margin-left: 20px;
+    height: 22px;
+    vertical-align: bottom;
 }
 
-#chat_embed
-{
-margin: 20px 0px 0px 10px;
+
+.semi-square {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
-#logo
-{
-position: relative;
-display: inline-block;
+#search-twitch-form {
+    font-size: 10px;
+    overflow: auto;
+
+    width: 10%;
+    height: 100%;
+    background-color: lightgray;
+
+    position: relative;
+    display: inline-block;
 }
 
-#streamer
-{
-font-size: 170%;
-width: 170px;
+#saved-chat-list {
+    z-index: 2;
 
-color: darkgreen;
-cursor: pointer;
-overflow: hidden;
+    font-size: 12px;
+    background-color: #E0E3E8; /*lighterergray*/
+    color: black;
+    font-family: Tahoma, Geneva, sans-serif;
 
-text-overflow:ellipsis;
-
-position: relative;
-display: inline-block;
+    position: absolute;
+    display: none;
 }
 
-#streamerslist
-{
-font-size: small;
+#center {
+    font-size: 0;
+    overflow: auto;
 
-width: 100%;
-cursor: pointer;
-height: 30px;
+    width: 85%;
+    height: 97%;
+    background-color:#E8E8E8; /*lightergray*/
 
-border-color: black;
-border-bottom: 1px solid;
+    position: relative;
+    display: inline-block;
 }
 
-.topcornerlogo
-{
-position: absolute;
-top:0;
-right:0;
-background-color: white;
-border-color: black;
-border: 2px solid;
-border-radius: 4px;
+#twitch-chat {
+    font-size: 0;
+
+    width:  350px;
+    height: 580px;
+    background-color: blue;
+    color: black;
+
+    position: relative;
+    display: inline-block;
+}
+
+#chat_embed {
+    margin: 20px 0px 0px 10px;
+}
+
+.logo {
+    position: relative;
+    display: inline-block;
+}
+
+.streamer {
+    font-size: 170%;
+    width: 170px;
+
+    color: darkgreen;
+    cursor: pointer;
+    overflow: hidden;
+
+    text-overflow:ellipsis;
+
+    position: relative;
+    display: inline-block;
+}
+
+.streamers-list {
+    font-size: small;
+
+    width: 100%;
+    cursor: pointer;
+    height: 30px;
+
+    border-color: black;
+    border-bottom: 1px solid;
+}
+
+.topcornerlogo {
+    position: absolute;
+    top:0;
+    right:0;
+    background-color: white;
+    border-color: black;
+    border: 2px solid;
+    border-radius: 4px;
 }
 /*
  * Custom Fonts
@@ -153,9 +158,9 @@ border-radius: 4px;
 }
 
 @font-face {
-font-family: 'SansationLight';
-src: url('./SansationLight.eot');
-src: local('SansationLight'), url('./SansationLight.woff') format('woff'), url('./SansationLight.ttf') format('truetype');
+    font-family: 'SansationLight';
+    src: url('./SansationLight.eot');
+    src: local('SansationLight'), url('./SansationLight.woff') format('woff'), url('./SansationLight.ttf') format('truetype');
 }
 
 /* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_423">Text with this font applied</p> */
@@ -170,12 +175,12 @@ src: local('SansationLight'), url('./SansationLight.woff') format('woff'), url('
 
 /* scroll results */
 .ui-autocomplete {
-max-height: 250px;
-overflow-y: auto;
-/* prevent horizontal scrollbar */
-overflow-x: hidden;
-/* add padding for vertical scrollbar */
-padding-right: 5px;
+    max-height: 250px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    /* add padding for vertical scrollbar */
+    padding-right: 5px;
 }
 
 /* loading - the AJAX indicator */

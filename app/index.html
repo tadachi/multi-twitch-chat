@@ -1,82 +1,91 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
     <head>
-        <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+        <meta content="text/html; charset=utf-8" http-equiv="content-type">
         <title>multitwitchchat - provides a fast way to get chatrooms of all  your favorite twitch streams.</title>
-        <meta name="description" content='Search for twitch streamers and open just the chat for each one.'>
-        <meta name='keywords' content='multitwitchchat takbytes.com multiple twitchchat'>
-        <meta name='author' content='takada'>
-        <link rel='stylesheet' href='css/main.css'>
-        <link rel='stylesheet' href='css/redmond/jquery-ui-1.10.4.custom.min.css'>
+        <meta name="description" content="Search for twitch streamers and open just the chat for each one.">
+        <meta name="keywords" content="multitwitchchat takbytes.com multiple twitchchat">
+        <meta name="author" content="takada">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/redmond/jquery-ui-1.10.4.custom.min.css">
         <!--load JQuery before Angular-->
-        <script src='js/jquery-1.10.2.js'></script>
-        <script src='js/jquery-ui-1.10.4.custom.min.js'></script>
+        <script src="js/jquery-1.10.2.js"></script>
+        <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
         <!-- JQuery Plugins -->
-        <script src='js/jquery.typing-0.2.0.min.js'></script>
+        <script src="js/jquery.typing-0.2.0.min.js"></script>
         <!-- Angularjs -->
-        <script src='js/angular.min.1.3.0b10.js'></script>
-        <script src='js/angular-sanitize.min.1.3.0b10.js'></script>
-        <script src='js/ngStorage.min.js'></script>
+        <script src="js/angular.min.1.3.0b10.js"></script>
+        <script src="js/angular-sanitize.min.1.3.0b10.js"></script>
+        <script src="js/ngStorage.min.js"></script>
         <!-- Multitwitchchat -->
-        <script src='js/multitwitchchat.js'></script>
+        <script src="js/multitwitchchat.js"></script>
+        <!-- twitch -->
+        <script src="https://ttv-api.s3.amazonaws.com/twitch.min.js"></script>
         <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            Twitch.init({clientId: '19ia7f1xe0svx4dl50kwripehzvpyuw'}, function(error, status) {
+                // the sdk is now loaded
+            });
+        </script>
+        <!-- Google Analytics -->
+        <script>
+        (function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        })(window,document,"script","//www.google-analytics.com/analytics.js","ga");
 
-        ga('create', 'UA-55847588-3', 'auto');
-        ga('send', 'pageview');
+        ga("create", "UA-55847588-3", "auto");
+        ga("send", "pageview");
         </script>
     </head>
 
-    <body ng-app='app'>
-        <div id='container' ng-controller='MainController'>
+    <body ng-app="app">
+        <div id="container" ng-controller="MainController">
 
-            <div id='header'>
-                <div id='chatList' class='senlightfont unselectable' style='position: absolute; margin-top: 5px; font-size: medium;
-                border-radius: 4px; border-color: black; border: 1px solid; background-color: white; cursor: pointer;' ng-click="showSavedChatList = ! showSavedChatList">Manage Chats</div>
-                <!-- <div id='showSearch' class='senlightfont unselectable' style='position: absolute; margin-top: 5px; font-size: medium;
-                border-radius: 4px; border-color: black; border: 1px solid; background-color: white; cursor: pointer;' ng-click="!hideSavedChatList">Search</div> -->
-                <div id='copyright' class='senlightfont' style='position: absolute; margin-top: 5px; font-size: medium;'>&copy; 2014 takada</div>
-                <div id='srlplayer' class='senlightfont' style='position: absolute; margin-top: 5px; font-size: medium;'><a href='http://srl.takbytes.com' target='_blank'>srlplayer</a></div>
+
+
+            <div id="header">
+                <button id="chatListButton" class="senlightfont unselectable semi-square initial-header-margin"  onclick="toggleSavedChatList()">Manage Chats</button>
+                <!-- <div id="showSearch" class="senlightfont unselectable" style="position: absolute; margin-top: 5px; font-size: medium;
+                border-radius: 4px; border-color: black; border: 1px solid; background-color: white; cursor: pointer;" ng-click="!hideSavedChatList">Search</div> -->
+                <img class="twitch-connect header-image-item header-margin " src="http://ttv-api.s3.amazonaws.com/assets/connect_light.png"  href="#" />
+                <a class="header-item senlightfont header-margin" href="http://srl.takbytes.com" target="_blank">srlplayer2</a>
+                <a class="header-item senlightfont header-margin" href="https://github.com/tadachi/multitwitchchat" target="_blank">Github</a>
             </div>
 
-            <div id='savedChatList' ng-show='showSavedChatList' ng-show='hideSavedChatList'>
-                <div ng-repeat='channel in savedstreamers'>
-                    <div class='unselectable' id='streamerslist'>
-                        <div id='logo'>
-                            <img ng-src='{{channel.logo}}' width='30' height='30' err-src='img/twitchchat.jpg'></img>
+            <div id="saved-chat-list">
+                <div ng-repeat="channel in savedstreamers">
+                    <div class="unselectable streamers-list">
+                        <div class="logo">
+                            <img ng-src="{{channel.logo}}" width="30" height="30" err-src="img/twitchchat.jpg" />
                         </div>
-                        <div id='streamer'>{{channel.streamname}}</div>
-                        <manage-chats ng-click='closeChat(channel)' style='cursor: pointer; background-color: white; border-radius: 4px;
-                            border-color: black; border: 1px solid; font-size: 15px; float: right; margin-top: 5px;'>Close</manage-chats>
+                        <div class="streamer">{{channel.streamname}}</div>
+                        <manage-chats ng-click="closeChat(channel)" style="cursor: pointer; background-color: white; border-radius: 4px;
+                            border-color: black; border: 1px solid; font-size: 15px; float: right; margin-top: 5px;">Close</manage-chats>
                     </div>
                 </div>
             </div>
 
-            <div id='searchTwitchForm'>
-                <input type='text' id='streamnames' ng-model='searchtext' twitch-search
-                       style='position: relative; margin: display:inline-block; width: 99%; height: 30px;
-                              font-size: 25px; border: 1px; border-style: solid; border-color: black; z-index: 1;'>
-                          </input>
+            <div id="search-twitch-form">
+                <input type="text" id="streamnames" ng-model="searchtext" twitch-search
+                       style="position: relative; display:inline-block; width: 99%; height: 30px; font-size: 25px; border: 1px; border-style: solid; border-color: black; z-index: 1">
+                  </input>
 
-                <div ng-repeat='channel in searchresults'>
-                    <multi-chat streamname='{{channel.display_name}}' logo='{{channel.logo}}' savedstreamers='savedstreamers' insertionpoint='center'>
-                        <div class='unselectable' id='streamerslist'>
-                            <div id='logo'>
-                                <img ng-src='{{channel.logo}}' width='30' height='30' err-src='img/twitchchat.jpg'></img>
-                                <!-- <img ng-src='' width='30' height='30' err-src='img/twitchchat.jpg'></img> -->
+                <div ng-repeat="channel in searchresults">
+                    <multi-chat streamname="{{channel.display_name}}" logo="{{channel.logo}}" savedstreamers="savedstreamers" insertionpoint="center">
+                        <div class="unselectable streamers-list">
+                            <div class="logo">
+                                <img ng-src="{{channel.logo}}" width="30" height="30" err-src="img/twitchchat.jpg" />
+                                <!-- <img ng-src="" width="30" height="30" err-src="img/twitchchat.jpg"></img> -->
                             </div>
-                          <div id='streamer'>{{channel.display_name}}</div>
+                          <div class="streamer">{{channel.display_name}}</div>
                         </div>
                     </multi-chat>
                 </div>
             </div>
 
             <!-- chat gets inserted here. -->
-            <div id='center'>
-                <load-chat savedstreamers='savedstreamers' insertionpoint='center'></load-chat>
+            <div id="center">
+                <load-chat savedstreamers="savedstreamers" insertionpoint="center"></load-chat>
             </div>
         </div>
     </body>

@@ -111,7 +111,7 @@ app.directive('loadChat', ['$compile', function($compile) {
 				// Update the color upon adding a new div.
 				$scope.color = $scope.colors[Math.floor(Math.random() * $scope.colors.length)]; //$scope.colors.length = 147
 
-				var html = ["<div id='twitchchat' class='set {uid}' style='background-color: {color}' draggable>".format({color: $scope.color, uid: stream.streamname}), // resizable
+				var html = ["<div id='twitch-chat' class='set {uid}' style='background-color: {color}' draggable>".format({color: $scope.color, uid: stream.streamname}), // resizable
 							"<span style='position: absolute; margin: 20px 0px 0px 20px;'>{chat}</span>".format({chat: chat}),
 							"<img ng-src='{logo}' class='topcornerlogo' width='50' height='50' err-src='img/twitchchat.jpg'>".format({logo: stream.logo}),
 							"</div>"
@@ -193,7 +193,7 @@ app.directive('multiChat', ['$compile', function($compile) {
 				// Update the color upon adding a new div.
 				$scope.color = $scope.colors[Math.floor(Math.random() * $scope.colors.length)];
 
-				var html = ["<div id='twitchchat' class='set {uid}' style='background-color: {color}' draggable>".format({color: $scope.color, uid: stream.streamname}), // resizable
+				var html = ["<div id='twitch-chat' class='set {uid}' style='background-color: {color}' draggable>".format({color: $scope.color, uid: stream.streamname}), // resizable
 							"<span style='position: absolute; margin: 20px 0px 0px 20px;'>{chat}</span>".format({chat: chat}),
 							"<img ng-src='{logo}' class='topcornerlogo' width='50' height='50' err-src='img/twitchchat.jpg'>".format({logo: stream.logo}),
 							"</div>"
@@ -324,24 +324,44 @@ function applyResolutions() {
 	$('#center').css('width', res.centerW);
 	$('#center').css('height', res.centerH);
 
-	$('#searchTwitchForm').css('width', res.searchTwitchFormW);
-	$('#searchTwitchForm').css('height', res.searchTwitchFormH);
+	$('#search-twitch-form').css('width', res.searchTwitchFormW);
+	$('#search-twitch-form').css('height', res.searchTwitchFormH);
 
-	$('#savedChatList').css('width', res.searchTwitchFormW);
-	$('#savedChatList').css('height', res.searchTwitchFormH);
+	$('#saved-chat-list').css('width', res.searchTwitchFormW);
+	$('#saved-chat-list').css('height', res.searchTwitchFormH);
 
 	/* Header */
-	$('#chatList').css('margin-left', 72); //Align image to far right properly.
-	// $('#showSearch').css('margin-left', 20); //Align image to far right properly.
-	$('#copyright').css('margin-left', res.headerW-120);
-	$('#srlplayer').css('margin-left', 260); //Align to far right properly.
+	//$('#chatListButton').css('margin-left', 72); //Align image to far right properly.
+	//// $('#showSearch').css('margin-left', 20); //Align image to far right properly.
+	//$('#copyright').css('margin-left', res.headerW-120);
+	//$('#srlplayer').css('margin-left', 260); //Align to far right properly.
+}
+
+function toggleSavedChatList() {
+    $('#saved-chat-list').toggle();
 }
 
 /* Main */
 $( document ).ready(function() {
 	applyResolutions(); // Apply panel resolutions based on current window sizes
 
+    $("#chat-list-button").click(function() {
+        $("#saved-chat-list").toggle();
+    })
+
 	$( window ).resize(function() {
 		applyResolutions();
 	});
+
+    /************ Twitch login button logic ***********/
+    $('.twitch-connect').click(function() {
+        Twitch.login({
+            scope: ['user_read', 'channel_read']
+        });
+    })
+
+    if (status.authenticated) {
+        // Already logged in, hide button.
+        $('.twitch-connect').hide()
+    }
 });
