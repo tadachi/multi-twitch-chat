@@ -1,5 +1,5 @@
 {
-    "name": "multitwitchchat",
+    "name": "multi-twitch-chat",
     "main": "dev-server.js",
     "dependencies": {
         "express": "^5.0.0-alpha.1",

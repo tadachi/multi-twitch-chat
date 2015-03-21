@@ -1,4 +1,4 @@
-multitwitchchat
+multi-twitch-chat
 =========
 
 #### Description
@@ -10,13 +10,13 @@ License: MIT
 
 #### Development
 
-Use this command in the same directory with the [package.json](https://github.com/tadachi/multitwitchchat/blob/master/package.json) file to install all the dependencies to get the node dev server working.
+Use this command in the same directory with the [package.json](https://github.com/tadachi/multi-twitch-chat/blob/master/package.json) file to install all the dependencies to get the node dev server working.
 
 ```bash
 npm install
 ```
 
-In [dev-server.js](https://github.com/tadachi/multitwitchchat/blob/master/dev-server.js) file, find the code line below and change it to fit your needs.
+In [dev-server.js](https://github.com/tadachi/multi-twitch-chat/blob/master/dev-server.js) file, find the code line below and change it to fit your needs.
 
 ```javascript
 ...
