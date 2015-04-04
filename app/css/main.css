@@ -23,16 +23,14 @@ html,body {
     display: inline-block;
 }
 
-.initial-header-margin {
+.initial-header-item {
     margin-left: 72px;
     margin-right: 72px;
+    margin-top: 5px;
 }
 
 .header-item{
     margin-left: 20px;
-}
-
-.header-margin {
     margin-top: 5px;
 }
 
@@ -41,7 +39,6 @@ html,body {
     height: 22px;
     vertical-align: bottom;
 }
-
 
 .semi-square {
     -webkit-border-radius: 5px;
@@ -85,12 +82,12 @@ html,body {
     display: inline-block;
 }
 
-#twitch-chat {
+.twitch-chat {
     font-size: 0;
 
     width:  350px;
     height: 580px;
-    background-color: blue;
+    background-color: aliceblue;
     color: black;
 
     position: relative;

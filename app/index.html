@@ -42,12 +42,12 @@
         <div id="container" ng-controller="MainController">
 
             <div id="header">
-                <button id="chatListButton" class="senlightfont unselectable semi-square initial-header-margin"  onclick="toggleSavedChatList()">Manage Chats</button>
+                <button id="chatListButton" class="senlightfont unselectable semi-square initial-header-item"  onclick="toggleSavedChatList()">Manage Chats</button>
                 <!-- <div id="showSearch" class="senlightfont unselectable" style="position: absolute; margin-top: 5px; font-size: medium;
                 border-radius: 4px; border-color: black; border: 1px solid; background-color: white; cursor: pointer;" ng-click="!hideSavedChatList">Search</div> -->
-                <img class="twitch-connect header-image-item header-margin " src="http://ttv-api.s3.amazonaws.com/assets/connect_light.png"  href="#" />
-                <a class="header-item senlightfont header-margin" href="http://srl.takbytes.com" target="_blank">srlplayer2</a>
-                <a class="header-item senlightfont header-margin" href="https://github.com/tadachi/multi-twitch-chat" target="_blank">Github</a>
+                <!--<img class="twitch-connect header-image-item header-margin " src="http://ttv-api.s3.amazonaws.com/assets/connect_light.png"  href="#" />-->
+                <a class="header-item senlightfont " href="http://srl.takbytes.com" target="_blank">srlplayer2</a>
+                <a class="header-item senlightfont " href="https://github.com/tadachi/multi-twitch-chat" target="_blank">Github</a>
             </div>
 
             <div id="saved-chat-list">
@@ -64,7 +64,7 @@
             </div>
 
             <div id="search-twitch-form">
-                <input type="text" id="streamnames" ng-model="searchtext" twitch-search
+                <input type="text" id="streamnames" ng-model="searchtext" placeholder="Search streamer.." twitch-search
                        style="position: relative; display:inline-block; width: 99%; height: 30px; font-size: 25px; border: 1px; border-style: solid; border-color: black; z-index: 1">
                   </input>
 

@@ -13,7 +13,28 @@ if (!String.prototype.format) {
 	}
 }
 
-//Bootstrap the application. and add the very important compile module.
+function AutoInteger(count, min, max) {
+    this.count = count;
+    this.min = min;
+    this.max = max;
+}
+
+AutoInteger.prototype.inc = function() {
+    if ( (this.count+1) > this.max ) {
+        this.count = this.min
+    } else {
+        this.count++;
+    }
+}
+AutoInteger.prototype.dec = function() {
+    if ( (this.count-1) < this.min ) {
+        this.count = this.min;
+    } else {
+        this.count--;
+    }
+}
+
+// Bootstrap the application. and add the very important compile module.
 var app = angular.module('app', ['ngSanitize', 'ngStorage'], ['$compileProvider', function($compileProvider) {
 $compileProvider.directive('myCompileUnsafe', ['$compile', function($compile) {
 	return function(scope, element, attrs) {
@@ -50,6 +71,7 @@ app.controller('MainController', function($scope,$location,$localStorage) {
 	$scope.savedstreamers = $scope.storage.savedstreamers;
 });
 
+// Make directive draggable.
 app.directive('draggable', function() {
 	return {
 		restrict: 'AEC',
@@ -62,7 +84,7 @@ app.directive('draggable', function() {
 	};
 });
 
-/* Handles images point to wrong url */
+// Handles images point to wrong url
 app.directive('errSrc', function() {
 	return {
 		link: function($scope, $element, $attrs) {
@@ -81,6 +103,7 @@ app.directive('errSrc', function() {
 	}
 });
 
+// On refresh, loads streams from previous session.
 app.directive('loadChat', ['$compile', function($compile) {
 	return {
 		restrict: 'AEC',
@@ -88,8 +111,12 @@ app.directive('loadChat', ['$compile', function($compile) {
 			insertionpoint: '@',
 			savedstreamers: '='
 		},
-		controller: function($scope, $element, $attrs) {
-			$scope.colors = [ 'SlateGray','SlateGrey','Snow','White','WhiteSmoke'];
+		controller: function($scope) {
+            $scope.res = calcResolutions();
+            $scope.colors = [ 'LightSteelBlue ','Snow','AliceBlue','Azure'];
+            $scope.autoInt = new AutoInteger(0, 0, $scope.colors.length);
+            width = Math.floor(($scope.res.centerW-20)/4); // 20 is the width of a scroll bar.
+            height = Math.floor($scope.res.centerH/2);
 
 			$scope.add = function(insertionpoint, stream) {
 
@@ -103,15 +130,15 @@ app.directive('loadChat', ['$compile', function($compile) {
 					'frameborder=\'0\' ',
 					'scrolling=\'yes\' ',
 					'src=\'{url}\' '.format({url: chatsrc}),
-					'width=\'{w}\' '.format({w: 310}),
-					'height=\'{h}\' '.format({h: 540}),
+					'width=\'{w}\' '.format({w: width-40}),
+					'height=\'{h}\' '.format({h: height-40}),
 					'> ',
 				'</iframe>'].join('');
 
-				// Update the color upon adding a new div.
-				$scope.color = $scope.colors[Math.floor(Math.random() * $scope.colors.length)]; //$scope.colors.length = 147
+                color = $scope.colors[$scope.autoInt.count];
+                $scope.autoInt.inc();
 
-				var html = ["<div id='twitch-chat' class='set {uid}' style='background-color: {color}' draggable>".format({color: $scope.color, uid: stream.streamname}), // resizable
+                var html = ["<div class='set {uid} twitch-chat' style='background-color: {color}; width: {w}px; height: {h}px;' draggable>".format({color: color, uid: stream.streamname, w: width, h: height}),
 							"<span style='position: absolute; margin: 20px 0px 0px 20px;'>{chat}</span>".format({chat: chat}),
 							"<img ng-src='{logo}' class='topcornerlogo' width='50' height='50' err-src='img/twitchchat.jpg'>".format({logo: stream.logo}),
 							"</div>"
@@ -132,7 +159,7 @@ app.directive('loadChat', ['$compile', function($compile) {
 	};
 }]);
 
-/* Creates multiple from clicking streams from search */
+// Creates multiple from clicking streams from search.
 app.directive('multiChat', ['$compile', function($compile) {
 	return {
 		restrict: 'AEC',
@@ -142,11 +169,16 @@ app.directive('multiChat', ['$compile', function($compile) {
 			logo: '@',
 			savedstreamers: '='
 		},
-		link: function($scope, $element, $attrs) {
+		link: function($scope, $element) {
+            $scope.res = calcResolutions();
+            $scope.colors = [ 'LightSteelBlue ','Snow','AliceBlue','Azure'];
+            $scope.autoInt = new AutoInteger(0, 0, $scope.colors.length);
+            width = Math.floor(($scope.res.centerW-20)/4); // 20 is the width of a scroll bar.
+            height = Math.floor($scope.res.centerH/2);
+
 			$element.bind('click', function(e) {
 				console.log($scope.logo);
 				var stream = { streamname: $scope.streamname, logo: $scope.logo };
-				var index = $scope.savedstreamers.indexOf(stream);
 
 				if ($scope.savedstreamers.length >= 8) { // Set a maximum number of streams allowed opened.
 					return -1;
@@ -170,11 +202,7 @@ app.directive('multiChat', ['$compile', function($compile) {
 				$scope.add($scope.insertionpoint, stream);
 			});
 
-			$scope.colors = [ 'SlateGray','SlateGrey','Snow','White','WhiteSmoke'];
-
 			$scope.add = function(insertionpoint, stream) {
-				res = calcResolutions();
-
 				// Source(src) of the chat with streamname.
 				var chatsrc = 'http://twitch.tv/chat/embed?channel={ch}&amp;popout_chat=true'.format({
 					ch: stream.streamname});
@@ -185,15 +213,15 @@ app.directive('multiChat', ['$compile', function($compile) {
 					'frameborder=\'0\' ',
 					'scrolling=\'yes\' ',
 					'src=\'{url}\' '.format({url: chatsrc}), //'src=\'{url}\' '.format({url: 'test'}),
-					'width=\'{w}\' '.format({w: 310}),
-					'height=\'{h}\' '.format({h: 540}),
+					'width=\'{w}\' '.format({w: width-40}),
+					'height=\'{h}\' '.format({h: height-40}),
 					'draggable> ',
 				'</iframe>'].join('');
 
-				// Update the color upon adding a new div.
-				$scope.color = $scope.colors[Math.floor(Math.random() * $scope.colors.length)];
+                color = $scope.colors[$scope.autoInt.count];
+                $scope.autoInt.inc();
 
-				var html = ["<div id='twitch-chat' class='set {uid}' style='background-color: {color}' draggable>".format({color: $scope.color, uid: stream.streamname}), // resizable
+                var html = ["<div class='set {uid} twitch-chat' style='background-color: {color}; width: {w}px; height: {h}px;' draggable>".format({color: color, uid: stream.streamname, w: width, h: height}),
 							"<span style='position: absolute; margin: 20px 0px 0px 20px;'>{chat}</span>".format({chat: chat}),
 							"<img ng-src='{logo}' class='topcornerlogo' width='50' height='50' err-src='img/twitchchat.jpg'>".format({logo: stream.logo}),
 							"</div>"
@@ -281,7 +309,7 @@ app.directive('twitchSearch', ['$compile', function($compile){
 				},
 				delay: 350
 			});
-		},
+		}
 };
 }]);
 
