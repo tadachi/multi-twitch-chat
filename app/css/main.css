@@ -32,6 +32,7 @@ html,body {
 .header-item{
     margin-left: 20px;
     margin-top: 5px;
+    text-decoration: none;
 }
 
 .header-image-item {
