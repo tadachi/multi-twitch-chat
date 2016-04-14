@@ -1,20 +1,11 @@
 var express         = require('express');
-var bodyParser      = require('body-parser');
-var methodOverride  = require('method-override');
-var router          = express.Router();
 var vhost           = require('vhost');
 var app             = require('express.io')();
 
 var port            = parseInt(process.env.PORT, 10) || 4000;
+
 app.http().io();
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded());
-
-// parse application/json
-app.use(bodyParser.json());
-
-app.use(methodOverride());
 app.listen(port);
 app.enable('trust proxy');
 

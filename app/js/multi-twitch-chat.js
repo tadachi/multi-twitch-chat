@@ -1,5 +1,5 @@
 /* Similar to what you find in Java's format. */
-/* Usage: chatsrc = 'http://twitch.tv/chat/embed?channel={channel}&amp;popout_chat=true'.format({ channel: streamer}); */
+/* Usage: chatsrc = 'https://twitch.tv/chat/embed?channel={channel}&amp;popout_chat=true'.format({ channel: streamer}); */
 if (!String.prototype.format) {
 	String.prototype.format = function() {
 		var str = this.toString();
@@ -121,7 +121,7 @@ app.directive('loadChat', ['$compile', function($compile) {
 			$scope.add = function(insertionpoint, stream) {
 
 				// Source(src) of the chat with streamname.
-				var chatsrc = 'http://twitch.tv/chat/embed?channel={ch}&amp;popout_chat=true'.format({
+				var chatsrc = 'https://twitch.tv/chat/embed?channel={ch}&amp;popout_chat=true'.format({
 					ch: stream.streamname});
 
 				// iframe of the chat goes into a twitchchat div that's draggable.
@@ -204,7 +204,7 @@ app.directive('multiChat', ['$compile', function($compile) {
 
 			$scope.add = function(insertionpoint, stream) {
 				// Source(src) of the chat with streamname.
-				var chatsrc = 'http://twitch.tv/chat/embed?channel={ch}&amp;popout_chat=true'.format({
+				var chatsrc = 'https://twitch.tv/chat/embed?channel={ch}&amp;popout_chat=true'.format({
 					ch: stream.streamname});
 
 				// iframe of the chat.
